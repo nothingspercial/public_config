@@ -4,8 +4,11 @@ on:
   repository_dispatch:
     types: update_config
   schedule:
-    - cron: '0 12 * * *'
     - cron: '0 17 * * *'
+    - cron: '15 19 * * *'
+    - cron: '59 23 * * *'
+env:
+  TZ: "Asia/Ho_Chi_Minh"
 permissions:
   contents: write
 jobs:
