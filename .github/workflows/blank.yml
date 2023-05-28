@@ -1,0 +1,33 @@
+name: Nightly Workflow
+
+on:
+  repository_dispatch:
+    types: update_config
+  schedule:
+    - cron: '12 */2 * * *'
+env:
+  TZ: "Asia/Ho_Chi_Minh"
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    - name: Load files from URLs
+      run: |
+        wget "http://dautuxuhuong.com/datafeed/get_stock_data.php"  -O  stock_data
+        wget "http://dautuxuhuong.com/datafeed/get_index_commodities_data.php"  -O  index_commodities_data
+        wget "http://dautuxuhuong.com/datafeed/get_news.php"  -O  get_news
+        wget "http://dautuxuhuong.com/datafeed/get_eod_status.php"  -O  eod_status
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Update file from URL"
+        git push
